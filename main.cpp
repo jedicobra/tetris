@@ -52,6 +52,9 @@ void displayO()
    // glEnd();
 
    // glFlush();
+
+   glClear(GL_COLOR_BUFFER_BIT);
+
    O_Tetromino o = O_Tetromino(-0.5, -0.5);
    
    o.draw();

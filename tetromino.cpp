@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-const float BLOCK_SIZE = 0.5;
+const float BLOCK_SIZE = 0.25;
 
 class Tetromino{
     public:
@@ -33,30 +33,30 @@ class Tetromino{
                 for(int j = 0; j < 4; j++){
                     if(matrix[i][j]){
 
-                        glClear(GL_COLOR_BUFFER_BIT);
-
-                        std::cout << x + i*BLOCK_SIZE << std::endl;
-                        std::cout << y + j*BLOCK_SIZE << std::endl;
+                        
 
                         glBegin(GL_POLYGON);
                         glColor3f(mainColor[0], mainColor[1], mainColor[2]);
+
                         glVertex2f(x + i*BLOCK_SIZE, y + j*BLOCK_SIZE);
                         glVertex2f(x + i*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
-                        glVertex2f(x + (i+1)*BLOCK_SIZE, y + j*BLOCK_SIZE);
                         glVertex2f(x + (i+1)*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
+                        glVertex2f(x + (i+1)*BLOCK_SIZE, y + j*BLOCK_SIZE);
+                        
                         glEnd();
 
-                        glLineWidth(20.0);
+                        glLineWidth(5.0);
 
-                        // glBegin(GL_LINE_LOOP);
+                        glBegin(GL_LINE_LOOP);
 
-                        // glColor3f(outlineColor[0], outlineColor[1], outlineColor[2]);
+                        glColor3f(outlineColor[0], outlineColor[1], outlineColor[2]);
                         
-                        // glVertex2f(x + i*BLOCK_SIZE, y + j*BLOCK_SIZE);
-                        // glVertex2f(x + i*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
-                        // glVertex2f(x + (i+1)*BLOCK_SIZE, y + j*BLOCK_SIZE);
-                        // glVertex2f(x + (i+1)*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
-                        // glEnd();
+                        glVertex2f(x + i*BLOCK_SIZE, y + j*BLOCK_SIZE);
+                        glVertex2f(x + i*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
+                        glVertex2f(x + (i+1)*BLOCK_SIZE, y + (j+1)*BLOCK_SIZE);
+                        glVertex2f(x + (i+1)*BLOCK_SIZE, y + j*BLOCK_SIZE);
+                        
+                        glEnd();
 
                         glFlush();
                     }
