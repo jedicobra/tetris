@@ -27,37 +27,32 @@ void init()
 //---------------------------------------
 // Display callback for OpenGL
 //---------------------------------------
-void displayO()
+void display()
 {
-   // glClear(GL_COLOR_BUFFER_BIT);
 
-   // glBegin(GL_POLYGON);
-   // glColor3f(1.0, 1.0, 0.0);
-   // glVertex2f(-0.25, -0.25);
-   // glVertex2f(-0.25, 0.25);
-   // glVertex2f(0.25, 0.25);
-   // glVertex2f(0.25, -0.25);
-   // glEnd();
-
-   // glLineWidth(50.0);
-
-   // glBegin(GL_LINE_LOOP);
-   // // Dark yellow
-   // glColor3f(1.0, 0.643, 0.0);
-   
-   // glVertex2f(-0.25, -0.25);
-   // glVertex2f(-0.25, 0.25);
-   // glVertex2f(0.25, 0.25);
-   // glVertex2f(0.25, -0.25);
-   // glEnd();
-
-   // glFlush();
 
    glClear(GL_COLOR_BUFFER_BIT);
 
-   O_Tetromino o = O_Tetromino(-0.5, -0.5);
-   
+   I_Tetromino i = I_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   i.draw();
+
+   L_Tetromino l = L_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   l.draw();
+
+   J_Tetromino j = J_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   j.draw();
+
+   O_Tetromino o = O_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    o.draw();
+
+   S_Tetromino s = S_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   s.draw();
+
+   T_Tetromino t = T_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   t.draw();
+
+   Z_Tetromino z = Z_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   z.draw();
 
 }
 
@@ -66,12 +61,14 @@ void displayO()
 //---------------------------------------
 int main(int argc, char *argv[])
 {
+   srand (time(NULL));
+
    glutInit(&argc, argv);
    glutInitWindowSize(500, 500);
    glutInitWindowPosition(250, 250);
    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
    glutCreateWindow("Square");
-   glutDisplayFunc(displayO);
+   glutDisplayFunc(display);
    init();
    glutMainLoop();
    return 0;
