@@ -23,6 +23,8 @@ S_Tetromino s = S_Tetromino();
 T_Tetromino t = T_Tetromino(); 
 Z_Tetromino z = Z_Tetromino();
 
+
+
 //---------------------------------------
 // Init function for OpenGL
 //---------------------------------------
@@ -32,6 +34,10 @@ void init()
    glMatrixMode(GL_PROJECTION);
    glLoadIdentity();
    glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+}
+
+void drawGrid(){
+   
 }
 
 //---------------------------------------
@@ -73,10 +79,10 @@ int main(int argc, char *argv[])
    srand (time(NULL));
 
    glutInit(&argc, argv);
-   glutInitWindowSize(500, 500);
+   glutInitWindowSize(500, 1000);
    glutInitWindowPosition(250, 250);
    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
-   glutCreateWindow("Square");
+   glutCreateWindow("Max's Tetris");
    glutDisplayFunc(display);
    init();
    glutMainLoop();
