@@ -9,9 +9,19 @@
 #include <vector>
 #include <iostream>
 
+// All the tetris stuff is in this file
 #include "tetromino.cpp"
 
 using namespace std;
+
+// Declare 7 global tetrominoes with the default constructors
+I_Tetromino i = I_Tetromino(); 
+L_Tetromino l = L_Tetromino(); 
+J_Tetromino j = J_Tetromino(); 
+O_Tetromino o = O_Tetromino(); 
+S_Tetromino s = S_Tetromino(); 
+T_Tetromino t = T_Tetromino(); 
+Z_Tetromino z = Z_Tetromino();
 
 //---------------------------------------
 // Init function for OpenGL
@@ -29,29 +39,28 @@ void init()
 //---------------------------------------
 void display()
 {
-
-
    glClear(GL_COLOR_BUFFER_BIT);
 
-   I_Tetromino i = I_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   // The initialization is done in display() so the positions change every time the window is resized
+   // x and y are specified in the constructor
+   i = I_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   l = L_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   j = J_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   o = O_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   s = S_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   t = T_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+   z = Z_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
+
+   // Call the draw function for each tetromino
+   // Right now the tetromino draw method uses the proportions of the window (like in the source code "square" program)
+   // So a resized rectangular window means rectangles instead of squares
+   //Also the line width doesn't scale with the tetrominoes right now
    i.draw();
-
-   L_Tetromino l = L_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    l.draw();
-
-   J_Tetromino j = J_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    j.draw();
-
-   O_Tetromino o = O_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    o.draw();
-
-   S_Tetromino s = S_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    s.draw();
-
-   T_Tetromino t = T_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    t.draw();
-
-   Z_Tetromino z = Z_Tetromino((rand() % 1500 - 999)*0.001, (rand() % 1500 - 999)*0.001);
    z.draw();
 
 }

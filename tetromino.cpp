@@ -11,13 +11,16 @@ const float BLOCK_SIZE = 0.12;
 
 class Tetromino{
     public:
-        // Bad system?
-        // Should probably just store list of values to increment draw by
+        // Right now I store the shapes in a 4x4 matrix (enough to hold the I-tetromino)
+        // It might be better to just store the direction to increment the vertices by
+        // So like down right up for the O-tetromino
         bool matrix[4][4];
 
+        // Colors are just stored in arrays of 3 floats
         float mainColor[3];
         float outlineColor[3];
 
+        // Tetromino position using Vertex2f (relative to center)
         float x, y;
 
         Tetromino() {};
@@ -29,12 +32,11 @@ class Tetromino{
         }
 
         void draw(){
+            // Loop through the 2d array to find the positions that have squares
             for(int i = 0; i < 4; i++){
                 for(int j = 0; j < 4; j++){
                     if(matrix[i][j]){
-
-                        
-
+                        // Draw each vertex of the square
                         glBegin(GL_POLYGON);
                         glColor3f(mainColor[0], mainColor[1], mainColor[2]);
 
@@ -45,6 +47,7 @@ class Tetromino{
                         
                         glEnd();
 
+                        // Draw the outline
                         glLineWidth(2.5);
 
                         glBegin(GL_LINE_LOOP);
@@ -69,8 +72,13 @@ class Tetromino{
 
 };
 
+// All the tetromino classes extend Tetromino
+// They override the constructor, but in the draw method they should just call Tetromino::Draw()
+
 class O_Tetromino : Tetromino{
     public:
+        O_Tetromino() {}
+
         O_Tetromino(float x, float y){
             matrix[0][0] = 1;
             matrix[0][1] = 1;
@@ -114,7 +122,11 @@ class O_Tetromino : Tetromino{
 };
 
 class I_Tetromino : Tetromino{
+    
+
     public:
+        I_Tetromino() {}
+
         I_Tetromino(float x, float y){
             matrix[0][0] = 1;
             matrix[0][1] = 0;
@@ -155,7 +167,11 @@ class I_Tetromino : Tetromino{
 };
 
 class L_Tetromino : Tetromino{
+    
+
     public:
+        L_Tetromino() {}
+
         L_Tetromino(float x, float y){
             matrix[0][0] = 1;
             matrix[0][1] = 1;
@@ -196,7 +212,11 @@ class L_Tetromino : Tetromino{
 };
 
 class J_Tetromino : Tetromino{
+    
+
     public:
+        J_Tetromino() {}
+
         J_Tetromino(float x, float y){
             matrix[0][0] = 0;
             matrix[0][1] = 1;
@@ -237,7 +257,11 @@ class J_Tetromino : Tetromino{
 };
 
 class Z_Tetromino : Tetromino{
+    
+
     public:
+        Z_Tetromino() {}
+
         Z_Tetromino(float x, float y){
             matrix[0][0] = 0;
             matrix[0][1] = 1;
@@ -278,7 +302,11 @@ class Z_Tetromino : Tetromino{
 };
 
 class S_Tetromino : Tetromino{
+    
+
     public:
+        S_Tetromino() {}
+
         S_Tetromino(float x, float y){
             matrix[0][0] = 0;
             matrix[0][1] = 0;
@@ -319,7 +347,11 @@ class S_Tetromino : Tetromino{
 };
 
 class T_Tetromino : Tetromino{
+    
+
     public:
+        T_Tetromino() {}
+        
         T_Tetromino(float x, float y){
             matrix[0][0] = 0;
             matrix[0][1] = 1;
