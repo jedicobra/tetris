@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-const float BLOCK_SIZE = 0.2;
+const float BLOCK_SIZE = 0.1;
 
 struct Color{
     float r, g, b;
@@ -17,19 +17,19 @@ void draw_square(float x, float y, float w, Color main, Color background)
 {
    glBegin(GL_POLYGON);
    glColor3f(main.r, main.g, main.b);
-   glVertex2f(x-w/2, y-w/2);
-   glVertex2f(x-w/2, y+w/2);
-   glVertex2f(x+w/2, y+w/2);
-   glVertex2f(x+w/2, y-w/2);
+   glVertex2f((x-w/2)*2, y-w/2);
+   glVertex2f((x-w/2)*2, y+w/2);
+   glVertex2f((x+w/2)*2, y+w/2);
+   glVertex2f((x+w/2)*2, y-w/2);
    glEnd();
 
    glLineWidth(3);
    glBegin(GL_LINE_LOOP);
    glColor3f(background.r, background.g, background.b);
-   glVertex2f(x-w/2, y-w/2);
-   glVertex2f(x-w/2, y+w/2);
-   glVertex2f(x+w/2, y+w/2);
-   glVertex2f(x+w/2, y-w/2);
+   glVertex2f((x-w/2)*2, y-w/2);
+   glVertex2f((x-w/2)*2, y+w/2);
+   glVertex2f((x+w/2)*2, y+w/2);
+   glVertex2f((x+w/2)*2, y-w/2);
    glEnd();
 }
 
