@@ -14,9 +14,7 @@
 
 using namespace std;
 
-// Declare 7 global tetrominoes with the default constructors
-I_Tetromino i = I_Tetromino(); 
-
+vector<Tetromino*> pieces;
 
 
 //---------------------------------------
@@ -62,16 +60,56 @@ void display()
 
    drawGrid();
 
-   // The initialization is done in display() so the positions change every time the window is resized
-   // x and y are specified in the constructor
-   i = I_Tetromino(0, 0);
+   for(int i = 0; i < pieces.size(); i++){
+      pieces.at(i)->draw();
+   }
 
-   // Call the draw function for each tetromino
-   // Right now the tetromino draw method uses the proportions of the window (like in the source code "square" program)
-   // So a resized rectangular window means rectangles instead of squares
-   //Also the line width doesn't scale with the tetrominoes right now
-   i.draw();
+}
 
+
+void keyboard(unsigned char key, int x, int y)
+{
+   switch(key)
+   {
+      case 'o':
+         pieces.push_back(new O_Tetromino(0.0, 0.0));
+         break;
+   }
+   
+   // Redraw objects
+   glutPostRedisplay();
+}
+
+
+
+
+//---------------------------------------
+// Keyboard callback for OpenGL
+//---------------------------------------
+void special(int key, int x, int y)
+{
+   if(pieces.size() > 0){
+      switch(key)
+      {
+         case GLUT_KEY_UP:
+            pieces.back()->y += 0.1;
+            break;
+         case GLUT_KEY_DOWN:
+            pieces.back()->y -= 0.1;
+            break;
+         case GLUT_KEY_LEFT:
+            pieces.back()->x -= 0.1;
+            break;
+         case GLUT_KEY_RIGHT:
+            pieces.back()->x += 0.1;
+            break;
+         default:
+            break;
+      }
+
+      // Redraw objects
+      glutPostRedisplay();
+   }
 }
 
 //---------------------------------------
@@ -87,6 +125,8 @@ int main(int argc, char *argv[])
    glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
    glutCreateWindow("Max's Tetris");
    glutDisplayFunc(display);
+   glutSpecialFunc(special);
+   glutKeyboardFunc(keyboard);
    init();
    glutMainLoop();
    return 0;

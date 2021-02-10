@@ -15,22 +15,25 @@ struct Color{
 
 void draw_square(float x, float y, float w, Color main, Color background)
 {
-   glBegin(GL_POLYGON);
-   glColor3f(main.r, main.g, main.b);
-   glVertex2f((x-w/2)*2, y-w/2);
-   glVertex2f((x-w/2)*2, y+w/2);
-   glVertex2f((x+w/2)*2, y+w/2);
-   glVertex2f((x+w/2)*2, y-w/2);
-   glEnd();
+    x -= BLOCK_SIZE/2;
+    y -= BLOCK_SIZE/2;
 
-   glLineWidth(3);
-   glBegin(GL_LINE_LOOP);
-   glColor3f(background.r, background.g, background.b);
-   glVertex2f((x-w/2)*2, y-w/2);
-   glVertex2f((x-w/2)*2, y+w/2);
-   glVertex2f((x+w/2)*2, y+w/2);
-   glVertex2f((x+w/2)*2, y-w/2);
-   glEnd();
+    glBegin(GL_POLYGON);
+    glColor3f(main.r, main.g, main.b);
+    glVertex2f((x-w/2)*2, y-w/2);
+    glVertex2f((x-w/2)*2, y+w/2);
+    glVertex2f((x+w/2)*2, y+w/2);
+    glVertex2f((x+w/2)*2, y-w/2);
+    glEnd();
+ 
+    glLineWidth(3);
+    glBegin(GL_LINE_LOOP);
+    glColor3f(background.r, background.g, background.b);
+    glVertex2f((x-w/2)*2, y-w/2);
+    glVertex2f((x-w/2)*2, y+w/2);
+    glVertex2f((x+w/2)*2, y+w/2);
+    glVertex2f((x+w/2)*2, y-w/2);
+    glEnd();
 }
 
 class Tetromino{
@@ -49,8 +52,8 @@ class Tetromino{
             this->y = y;
         }
 
-        void draw(){
-
+        virtual void draw(){
+            std::cout << "default" << std::flush;
         }
 
 
@@ -60,7 +63,7 @@ class Tetromino{
 // All the tetromino classes extend Tetromino
 // They override the constructor, but in the draw method they should just call Tetromino::Draw()
 
-class O_Tetromino : Tetromino{
+class O_Tetromino : public Tetromino{
     public:
         O_Tetromino() {}
 
@@ -73,7 +76,7 @@ class O_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
@@ -83,7 +86,7 @@ class O_Tetromino : Tetromino{
         }
 };
 
-class I_Tetromino : Tetromino{
+class I_Tetromino : public Tetromino{
     public:
         I_Tetromino() {}
 
@@ -95,7 +98,7 @@ class I_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
@@ -105,7 +108,7 @@ class I_Tetromino : Tetromino{
         }
 };
 
-class L_Tetromino : Tetromino{
+class L_Tetromino : public Tetromino{
     public:
         L_Tetromino() {}
 
@@ -117,7 +120,7 @@ class L_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
@@ -127,7 +130,7 @@ class L_Tetromino : Tetromino{
         }
 };
 
-class J_Tetromino : Tetromino{
+class J_Tetromino : public Tetromino{
     public:
         J_Tetromino() {}
 
@@ -139,7 +142,7 @@ class J_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
@@ -149,7 +152,7 @@ class J_Tetromino : Tetromino{
         }
 };
 
-class Z_Tetromino : Tetromino{
+class Z_Tetromino : public Tetromino{
     public:
         Z_Tetromino() {}
 
@@ -161,7 +164,7 @@ class Z_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
@@ -171,7 +174,7 @@ class Z_Tetromino : Tetromino{
         }
 };
 
-class S_Tetromino : Tetromino{
+class S_Tetromino : public Tetromino{
     public:
         S_Tetromino() {}
 
@@ -183,7 +186,7 @@ class S_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
@@ -193,7 +196,7 @@ class S_Tetromino : Tetromino{
         }
 };
 
-class T_Tetromino : Tetromino{
+class T_Tetromino : public Tetromino{
     public:
         T_Tetromino() {}
         
@@ -205,7 +208,7 @@ class T_Tetromino : Tetromino{
             this->y = y;
         }
 
-        void draw(){
+        virtual void draw() override{
             draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
             draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
