@@ -6,8 +6,11 @@
 #endif
 
 #include <iostream>
+#include <vector>
+using namespace std;
 
 const float BLOCK_SIZE = 0.1;
+const int SCREEN_RATIO = 2;
 
 struct Color{
     float r, g, b;
@@ -15,48 +18,76 @@ struct Color{
 
 void draw_square(float x, float y, float w, Color main, Color background)
 {
-    x -= BLOCK_SIZE/2;
-    y -= BLOCK_SIZE/2;
-
     glBegin(GL_POLYGON);
     glColor3f(main.r, main.g, main.b);
-    glVertex2f((x-w/2)*2, y-w/2);
-    glVertex2f((x-w/2)*2, y+w/2);
-    glVertex2f((x+w/2)*2, y+w/2);
-    glVertex2f((x+w/2)*2, y-w/2);
+    glVertex2f((x)*SCREEN_RATIO, y);
+    glVertex2f((x)*SCREEN_RATIO, y+w);
+    glVertex2f((x+w)*SCREEN_RATIO, y+w);
+    glVertex2f((x+w)*SCREEN_RATIO, y);
     glEnd();
  
     glLineWidth(3);
     glBegin(GL_LINE_LOOP);
     glColor3f(background.r, background.g, background.b);
-    glVertex2f((x-w/2)*2, y-w/2);
-    glVertex2f((x-w/2)*2, y+w/2);
-    glVertex2f((x+w/2)*2, y+w/2);
-    glVertex2f((x+w/2)*2, y-w/2);
+    glVertex2f((x)*SCREEN_RATIO, y);
+    glVertex2f((x)*SCREEN_RATIO, y+w);
+    glVertex2f((x+w)*SCREEN_RATIO, y+w);
+    glVertex2f((x+w)*SCREEN_RATIO, y);
     glEnd();
 }
 
 class Tetromino{
     public:
-        // Colors are just stored in arrays of 3 floats
         Color mainColor;
         Color outlineColor;
 
         // Tetromino position using Vertex2f (relative to center)
         float x, y;
+        int rotation;
+
+        
+        // The dimensions of the square array (4, 3, or 2)
+        int dimension;
+        // The shape of the piece as a square vector of booleans
+        vector<vector<bool>> shape;
 
         Tetromino() {};
 
         Tetromino(float x, float y){
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {0, 0, 0},
+                {0, 0, 0},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw(){
-            std::cout << "default" << std::flush;
+        void draw(){
+            for(int i = 0; i < shape.size(); i++){
+                for(int j = 0; j < shape.size(); j++){
+                    if(shape[i][j]){
+                        cout << x+i*BLOCK_SIZE << ' ' << y+j*BLOCK_SIZE << endl << flush;
+                        draw_square(x-i*BLOCK_SIZE,y-j*BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
+                                
+                    }
+                }
+            }
+            glFlush();
         }
 
-
+        void rotate(){
+            vector<vector<bool>> rotated(shape.size(), vector<bool>(shape.size(), 0));
+            for(int i = 0; i < shape.size(); i++){
+                for(int j = 0; j < shape.size(); j++){
+                    rotated[i][j] = shape[shape.size() - j - 1][i];
+                }
+            }
+            shape = rotated;
+        }
 
 };
 
@@ -74,16 +105,24 @@ class O_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {1, 1},
+                {1, 1}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
+
+        void rotate(){
+            Tetromino::rotate();
+        }
+
+        
 };
 
 class I_Tetromino : public Tetromino{
@@ -96,15 +135,19 @@ class I_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {1, 1, 1, 1},
+                {0, 0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE*2,y,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
 
@@ -118,15 +161,18 @@ class L_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {1, 0, 0},
+                {1, 1, 1},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
 
@@ -140,15 +186,18 @@ class J_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {0, 0, 1},
+                {1, 1, 1},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
 
@@ -162,15 +211,18 @@ class Z_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {1, 1, 0},
+                {0, 1, 1},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
 
@@ -184,15 +236,18 @@ class S_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {0, 1, 1},
+                {1, 1, 0},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
 
@@ -206,14 +261,17 @@ class T_Tetromino : public Tetromino{
 
             this->x = x;
             this->y = y;
+
+            this->rotation = 0;
+
+            this->shape = {
+                {0, 1, 0},
+                {1, 1, 1},
+                {0, 0, 0}
+            };
         }
 
-        virtual void draw() override{
-            draw_square(x,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x-BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x+BLOCK_SIZE,y,BLOCK_SIZE, mainColor, outlineColor);
-            draw_square(x,y+BLOCK_SIZE,BLOCK_SIZE, mainColor, outlineColor);
-
-            glFlush();
+        void draw(){
+            Tetromino::draw();
         }
 };
